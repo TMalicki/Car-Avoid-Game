@@ -18,7 +18,7 @@ public:
 	void setSprite() { sCar.setTexture(tCar); }
 	sf::Sprite& getSprite() { return sCar; }
 
-	void moveCar(int[2]);
+	void moveCar(int[2], sf::Vector2i);
 	void saveSettings(sf::Vector2i);
 };
 

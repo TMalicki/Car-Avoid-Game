@@ -1,16 +1,16 @@
 #include "car.h"
 
-void Car::moveCar(int dir[2])
+void Car::moveCar(int dir[2], sf::Vector2i windowSize)
 {
 	if (dir[0] == 1)
 	{
 		sCar.setRotation(10);
-		sCar.move(speed_x, 0);
+		if(sCar.getPosition().x + (sCar.getGlobalBounds().width/2) < windowSize.x) sCar.move(speed_x, 0);
 	}
 	else if (dir[0] == -1)
 	{
 		sCar.setRotation(-10);
-		sCar.move(-speed_x, 0);
+		if (sCar.getPosition().x - (sCar.getGlobalBounds().width/2) > 0) sCar.move(-speed_x, 0);
 	}
 	else if (dir[0] == 0) sCar.setRotation(0);
 }

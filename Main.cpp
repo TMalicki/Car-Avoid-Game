@@ -33,7 +33,7 @@ int main()
 			else dir[0] = 0;
 		}
 
-		car.moveCar(dir);
+		car.moveCar(dir, windowSize);
 
 		window.clear(sf::Color::Red);
 		window.draw(shape);
