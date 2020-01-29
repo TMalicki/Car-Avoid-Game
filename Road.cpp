@@ -20,13 +20,13 @@ void Road::setStripPosition(int* winSize)
 	roadStrip[i].setPosition(((float)*windowSize - stripWidth/2) / (stripAmount - 1) * i, 200 * startPosition);
 }
 
-void Road::move(sf::Vector2i windowSize)
+void Road::move(sf::Vector2i windowSize, float dt)
 {
 	for (int i = 0; i < roadStrip.size(); i++)
 	{
-		roadStrip[i].move(0, speed);
+		roadStrip[i].move(0, speed * dt * timeMultiply);
 		sf::Vector2f position = roadStrip[i].getPosition();
-		if (position.y > windowSize.y) roadStrip[i].setPosition(position.x, 0);
+		if (position.y > windowSize.y) roadStrip[i].setPosition(position.x, position.y - windowSize.y);
 	}
 }
 

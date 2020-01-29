@@ -6,6 +6,8 @@
 #include "settings.h"
 #include "car.h"
 #include "Road.h"
+#include "Player.h"
+#include "Traffic.h"
 #include <vector>
 
 class Game {
@@ -17,6 +19,10 @@ private:
 
 	Car* car;
 	vector<Road> road;
+	vector<Traffic*> traffic;
+
+	float dt = 0.0016;
+	sf::Clock clock;
 public:
 	Game(int i = 6);
 	void setup();
