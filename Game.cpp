@@ -11,14 +11,13 @@ Game::Game(int i) : road{1,2,3,4,5,6}
 
 void Game::setup()
 {
+	srand(time(NULL));
+
 	windowSize = setting.getWindowSize();
 
-
 	window = new sf::RenderWindow(sf::VideoMode(windowSize.x, windowSize.y), "CarAvoid");
-	//window->setFramerateLimit(60); //  60 f/s -> 0.016 s/frame //1818
-	//dt = 0.033
 	
-	car = new Player(windowSize);
+	car = new Player;
 	car->saveSettings(windowSize);
 
 	for(int i = 0;i<road.size();i++)
@@ -27,26 +26,37 @@ void Game::setup()
 
 bool Game::run()
 {
-	while (window->isOpen())
+	while (window->isOpen() && !car->collision(traffic))
 	{
 		while (window->pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed) window->close();
 		}
 		
-		cout << dt << endl;
+	//	cout << dt << endl;
 		dt = clock.restart().asSeconds();
 	
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) car->setDir(sf::Vector2i(1, 0));
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) car->setDir(sf::Vector2i(-1, 0));
 		else car->setDir(sf::Vector2i(0, 0));
 
-		//traffic.push_back(new Traffic(windowSize));
+		/*  -------------------------------------------------  */
+		if (spawnTime > 2.0) {
+			traffic.push_back(new Traffic);
+			traffic.back()->saveSettings(windowSize);
+			spawnTime = 0.0;
+		}
+		spawnTime += dt + (0.0005 * Traffic::getLvl());
+		
+		if(traffic.size() != 0)
+			for(int i = 0;i<traffic.size();i++)
+				traffic[i]->moveCar(windowSize, dt);
+		/*  -------------------------------------------------  */
 
 		car->moveCar(windowSize, dt);
 
 		for(int i = 0; i < road.size();i++)
-		road[i].move(windowSize, dt);
+			road[i].move(windowSize, dt);
 
 		draw();
 	}
@@ -64,6 +74,11 @@ void Game::draw()
 			window->draw(road[j].getRoad(i));
 		}
 	}
+	/*  -------------------------------------------------  */
+	if (traffic.size() != 0)
+		for(int i = 0; i < traffic.size(); i++)
+			window->draw(traffic[i]->getSprite());
+	/*  -------------------------------------------------  */
 	window->draw(car->getSprite());
 
 	window->display();

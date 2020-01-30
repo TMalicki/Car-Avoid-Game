@@ -1,7 +1,8 @@
 #include "car.h"
 
-Car::Car(int s) : speed_x(s)
+Car::Car(float sX, float sY)
 {
+	this->setSpeed(sX, sY);
 	//this->saveSettings(windowSize);
 }
 
