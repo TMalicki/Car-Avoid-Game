@@ -19,6 +19,7 @@ void Game::setup()
 	
 	car = new Player;
 	car->saveSettings(windowSize);
+	car->setText();
 
 	for(int i = 0;i<road.size();i++)
 		road[i].setStripPosition(&windowSize.x);
@@ -32,10 +33,10 @@ bool Game::run()
 		{
 			if (event.type == sf::Event::Closed) window->close();
 		}
-		
-	//	cout << dt << endl;
+
+		//	cout << dt << endl;
 		dt = clock.restart().asSeconds();
-	
+
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) car->setDir(sf::Vector2i(1, 0));
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) car->setDir(sf::Vector2i(-1, 0));
 		else car->setDir(sf::Vector2i(0, 0));
@@ -46,14 +47,23 @@ bool Game::run()
 			traffic.back()->saveSettings(windowSize);
 			spawnTime = 0.0;
 		}
-		spawnTime += dt + (0.0005 * Traffic::getLvl());
-		
-		if(traffic.size() != 0)
-			for(int i = 0;i<traffic.size();i++)
+
+
+		spawnTime += dt + (0.0002 * Player::getLvl());
+
+		std::cout << dt + (0.0002 * Player::getLvl()) << std::endl;
+
+		if (traffic.size() != 0)
+			for (int i = 0; i < traffic.size(); i++)
 				traffic[i]->moveCar(windowSize, dt);
 		/*  -------------------------------------------------  */
 
 		car->moveCar(windowSize, dt);
+
+		if (traffic.size() != 0) car->pointsGather(traffic, windowSize);
+		car->setText();
+
+		if (car->getPoints() % 10 == 0) car->lvlUp();
 
 		for(int i = 0; i < road.size();i++)
 			road[i].move(windowSize, dt);
@@ -80,6 +90,8 @@ void Game::draw()
 			window->draw(traffic[i]->getSprite());
 	/*  -------------------------------------------------  */
 	window->draw(car->getSprite());
+
+	window->draw(car->getText());
 
 	window->display();
 }

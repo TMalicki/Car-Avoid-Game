@@ -17,6 +17,7 @@ protected:
 	const float timeMultiply = 31.25;
 	/// ///////////////////////////////////////
 	sf::Vector2i speed;
+
 public:
 	//sf::Texture chooseCar();
 	Car(float, float);

@@ -6,7 +6,7 @@
 
 class Traffic : public Car {
 	private:
-		static int lvl;
+		//static int lvl;
 		//enum positions {first = 50, second = 150, third = 250, fourth = 350, fifth = 450};
 	public:
 		Traffic(float sX = 0.0, float sY = 9.0) : Car(sX, sY) { }
@@ -14,7 +14,7 @@ class Traffic : public Car {
 		virtual void startPoint(sf::Vector2i, int);
 		virtual void moveCar(sf::Vector2i, float);
 
-		static int getLvl() { return lvl; }
+		
 	};
 
 #endif
