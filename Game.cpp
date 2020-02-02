@@ -1,4 +1,4 @@
-#include "Game.h"
+﻿#include "Game.h"
 
 using namespace std;
 
@@ -27,14 +27,12 @@ void Game::setup()
 
 bool Game::run()
 {
-	while (window->isOpen() && !car->collision(traffic))
+	while (window->isOpen() /*&& !car->collision(traffic)*/)
 	{
 		while (window->pollEvent(event))
 		{
 			if (event.type == sf::Event::Closed) window->close();
 		}
-
-		//	cout << dt << endl;
 		dt = clock.restart().asSeconds();
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) car->setDir(sf::Vector2i(1, 0));
@@ -43,15 +41,13 @@ bool Game::run()
 
 		/*  -------------------------------------------------  */
 		if (spawnTime > 2.0) {
-			traffic.push_back(new Traffic);
+				traffic.push_back(new Traffic{ 0.0, 9.0f + 1.0f * Player::getLvl() });
+		
 			traffic.back()->saveSettings(windowSize);
 			spawnTime = 0.0;
 		}
 
-
-		spawnTime += dt + (0.0002 * Player::getLvl());
-
-		std::cout << dt + (0.0002 * Player::getLvl()) << std::endl;
+		spawnTime += dt +(0.0005 * Player::getLvl());
 
 		if (traffic.size() != 0)
 			for (int i = 0; i < traffic.size(); i++)
@@ -61,12 +57,11 @@ bool Game::run()
 		car->moveCar(windowSize, dt);
 
 		if (traffic.size() != 0) car->pointsGather(traffic, windowSize);
+
 		car->setText();
 
-		if (car->getPoints() % 10 == 0) car->lvlUp();
-
 		for(int i = 0; i < road.size();i++)
-			road[i].move(windowSize, dt);
+			road[i].move(windowSize, dt, Player::getLvl());
 
 		draw();
 	}

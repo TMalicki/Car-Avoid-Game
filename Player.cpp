@@ -1,7 +1,7 @@
 #include "Player.h"
 #include <string>
 
-int Player::lvl = 1;
+int Player::lvl = 0;
 
 Player::Player(float sX, float sY) : Car(sX, sY), points(0) {
 	font.loadFromFile("fonts/QuiteMagical.ttf");
@@ -48,6 +48,13 @@ void Player::moveCar(sf::Vector2i windowSize, float dt)
 	}
 }
 
+void Player::lvlUp(std::vector<Car*> trafficCar)
+{
+	if (points % 10 == 0) {
+		lvl++; 
+	}
+}
+
 bool Player::collision(std::vector<Car*> trafficCar)
 {
 	bool state = 0;
@@ -57,11 +64,12 @@ bool Player::collision(std::vector<Car*> trafficCar)
 		if (this->getSprite().getGlobalBounds().intersects(trafficCar[size]->getSprite().getGlobalBounds())) return true;
 }
 
-void Player::pointsGather(std::vector<Car*>& traffic, sf::Vector2i windowSize)
+void Player::pointsGather(std::vector<Car*>& trafficCar, sf::Vector2i windowSize)
 {
-	if ((*traffic.begin())->getSprite().getGlobalBounds().top >= windowSize.y)
+	if ((*trafficCar.begin())->getSprite().getGlobalBounds().top >= windowSize.y)
 	{
 		points++;
-		traffic.erase(traffic.begin());
+		trafficCar.erase(trafficCar.begin());
+		lvlUp(trafficCar);
 	}
 }

@@ -16,7 +16,7 @@ protected:
 	sf::Vector2i dir;
 	const float timeMultiply = 31.25;
 	/// ///////////////////////////////////////
-	sf::Vector2i speed;
+	sf::Vector2f speed;
 
 public:
 	//sf::Texture chooseCar();
@@ -34,7 +34,8 @@ public:
 	virtual void startPoint(sf::Vector2i, int) = 0;
 	virtual void moveCar(sf::Vector2i, float) = 0;
 
-	void setSpeed(int speed_x, int speed_y) { speed.x = speed_x; speed.y = speed_y; }
+	void setSpeed(float speed_x, float speed_y) { speed.x = speed_x; speed.y = speed_y; }
+	sf::Vector2f getSpeed() { return speed; }
 	void saveSettings(sf::Vector2i);
 	void setDir(sf::Vector2i);
 	sf::Vector2i getDir() { return dir; }

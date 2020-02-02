@@ -18,11 +18,12 @@ private:
 	Settings setting;
 	sf::Vector2i windowSize;
 
-	float dt = 0.0016; // for 60 Hz
+	float dt;// 0.0016; // for 60 Hz
 	sf::Clock clock;
 
 	///
 	Player* car;
+
 	vector<Road> road;
 
 	float spawnTime = 0.0; // spawning time of traffic cars

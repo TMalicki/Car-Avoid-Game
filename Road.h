@@ -22,7 +22,7 @@ public:
 	void setStripPosition(int* winSize);
 	sf::RectangleShape getRoad(int i) { return roadStrip[i]; }
 	int getSize() { return roadStrip.size(); }
-	void move(sf::Vector2i, float);
+	void move(sf::Vector2i, float, int);
 };
 
 

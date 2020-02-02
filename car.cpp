@@ -2,7 +2,7 @@
 
 Car::Car(float sX, float sY)
 {
-	this->setSpeed(sX, sY);
+	setSpeed(sX, sY);
 	//this->saveSettings(windowSize);
 }
 
