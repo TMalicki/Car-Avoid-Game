@@ -27,7 +27,7 @@ void Game::setup()
 
 bool Game::run()
 {
-	while (window->isOpen() /*&& !car->collision(traffic)*/)
+	while (window->isOpen() && !car->collision(traffic))
 	{
 		while (window->pollEvent(event))
 		{
@@ -38,6 +38,8 @@ bool Game::run()
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) car->setDir(sf::Vector2i(1, 0));
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) car->setDir(sf::Vector2i(-1, 0));
 		else car->setDir(sf::Vector2i(0, 0));
+
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) car->shoot();
 
 		/*  -------------------------------------------------  */
 		if (spawnTime > 2.0) {
@@ -85,6 +87,11 @@ void Game::draw()
 			window->draw(traffic[i]->getSprite());
 	/*  -------------------------------------------------  */
 	window->draw(car->getSprite());
+	//window->draw(car->getBounds());
+	window->draw(car->getCollisionArea());
+	//window->draw(car->getSprite().getTextureRect());
+
+	window->draw(car->getBullet());
 
 	window->draw(car->getText());
 

@@ -26,7 +26,6 @@ public:
 		setTexture();
 		setSprite();
 	}
-
 	void setSprite() { sCar.setTexture(tCar); }
 	sf::Sprite& getSprite() { return sCar; }
 
