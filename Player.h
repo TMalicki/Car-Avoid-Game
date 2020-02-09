@@ -3,6 +3,7 @@
 
 #include "car.h"
 #include "Bullet.h"
+#include <vector>
 
 class Player : public Car {
 private:
@@ -20,9 +21,10 @@ private:
 
 	static int lvl;
 
-	Bullet bullet;
-	//int bulletAmount;
-	//int bulletMaxAmount;
+	int bulletAmount = 0;
+	int bulletMaxAmount = 5;
+	std::vector<Bullet> bullet;
+
 public:
 	Player(float sX = 12.0, float sY = 0.0);
 
@@ -40,12 +42,16 @@ public:
 	sf::VertexArray getCollisionArea() { return *collisionArea; }
 
 	bool collision(std::vector<Car*> trafficCar);
+	bool collisionSAT(Car*);
 
 	void pointsGather(std::vector<Car*>&, sf::Vector2i);
 	int getPoints() { return score; }
 
-	void shoot();
-	sf::CircleShape& getBullet() { return bullet.getBullet(); }
+	void shoot(sf::Vector2i windowSize, float dt);
+	void reload();
+	int getBulletSize() { return bullet.size(); }
+	sf::CircleShape& getBullet(int i) { return bullet[i].getBullet(); }
+	sf::CircleShape& getMagazine() { return magazine; }
 };
 
 #endif

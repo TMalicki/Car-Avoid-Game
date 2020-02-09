@@ -7,7 +7,8 @@ class Bullet
 {
 private:
 	sf::CircleShape bullet;
-	int recoil;
+	static const int recoil = 300;
+	static int actualTimeToRecoil;
 	float speed;
 	int size;
 	float timeMulitplayer;
@@ -16,9 +17,11 @@ public:
 	void setSize(int x) { bullet.setRadius(x); }
 	void setSpeed(float x) { speed = x; }
 	float getSpeed() const { return speed; }
-	void move(sf::Vector2i windowSize, float dt) { bullet.move(0, -dt * timeMulitplayer * speed); }
+	void move(sf::Vector2i windowSize, float dt);
 	void position(float x, float y) { bullet.setPosition(x, y); }
 	sf::CircleShape& getBullet() { return bullet; }
+	bool Recoil();
+	float getPosition() { return bullet.getPosition().y; }
 };
 
 #endif

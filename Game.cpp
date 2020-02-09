@@ -39,7 +39,13 @@ bool Game::run()
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) car->setDir(sf::Vector2i(-1, 0));
 		else car->setDir(sf::Vector2i(0, 0));
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)) car->shoot();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			for (int i = 0; i < 50; i++) {}
+			car->shoot(windowSize, dt);
+
+		}
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) car->reload();
 
 		/*  -------------------------------------------------  */
 		if (spawnTime > 2.0) {
@@ -91,9 +97,13 @@ void Game::draw()
 	window->draw(car->getCollisionArea());
 	//window->draw(car->getSprite().getTextureRect());
 
-	window->draw(car->getBullet());
+	if (car->getBulletSize() != 0) {
+		for (int i = 0; i < car->getBulletSize(); i++) {
+			window->draw(car->getBullet(i));
+		}
+	}
 
 	window->draw(car->getText());
-
+	window->draw(car->getMagazine());
 	window->display();
 }

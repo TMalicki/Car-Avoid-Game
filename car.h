@@ -10,6 +10,8 @@ protected:
 	sf::Texture tCar;
 	sf::Sprite sCar;
 
+	sf::CircleShape magazine;
+
 	float height;
 	float width;
 
