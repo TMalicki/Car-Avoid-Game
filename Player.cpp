@@ -61,7 +61,10 @@ void Player::moveCar(sf::Vector2i windowSize, float dt)
 	{
 		for (int i = 0; i < bullet.size(); i++) {
 			bullet[i].move(windowSize, dt);
-			if (bullet.back().getPosition() < 0) bullet.pop_back();
+			if (bullet.back().getPosition() < 0)
+			{
+				bullet.pop_back();
+			}
 		}
 	}
 
@@ -206,37 +209,39 @@ void Player::shoot(sf::Vector2i windowSize, float dt)
 	//if (Bullet::getRecoil() <= timeToShoot)
 	//{
 		Bullet temp;
-		sf::FloatRect bounds = sCar.getGlobalBounds();
-		float mid = (bounds.left + bounds.width / 2);
+		float bulletX = (topLeftCorner.x + topRightCorner.x) / 2;
+		float bulletY = (topLeftCorner.y + topRightCorner.y) / 2;
 
-		if (bulletAmount < bulletMaxAmount) {
+		if (bulletAmount < bulletMaxAmount) 
+		{
 			if (bulletAmount > 0)
 			{
-				if (bullet.back().Recoil())
-				{
+				//if (bullet.back().Recoil())
+				//{
 					bullet.push_back(temp);
 					bulletAmount++;
-					bullet.back().position(mid, bounds.top);
-				}
+					bullet.back().position(bulletX, bulletY);
+				//}
 			}
 			else
 			{
 				bullet.push_back(temp);
 				bulletAmount++;
-				bullet.back().position(mid, bounds.top);
+				bullet.back().position(bulletX, bulletY);
 			}
+			Bullet::setTimeToRecoil(0);
 		}
-		else if (bulletAmount == bulletMaxAmount) reload();
+		//else if (bulletAmount == bulletMaxAmount) reload();
 }
 
 void Player::reload()
 {
-	static int counter = 0;
+	//static int counter = 0;
 
-	if (counter >= 800)
-	{
+	//if (counter >= 800)
+	//{
 		bulletAmount = 0;
-		counter = 0;
-	}
-	counter++;
+	//	counter = 0;
+	//}
+	//counter++;
 }

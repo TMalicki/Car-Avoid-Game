@@ -23,9 +23,8 @@ bool Bullet::Recoil()
 {
 	actualTimeToRecoil++;
 
-	if (actualTimeToRecoil >= recoil)
+	if (actualTimeToRecoil > recoil)
 	{
-		actualTimeToRecoil = 0;
 		return true;
 	}
 	else return false;

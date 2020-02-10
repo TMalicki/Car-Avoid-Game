@@ -39,14 +39,17 @@ bool Game::run()
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) car->setDir(sf::Vector2i(-1, 0));
 		else car->setDir(sf::Vector2i(0, 0));
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		if (Bullet::Recoil()) // how to make que so bullet do not have to wait?
 		{
-			for (int i = 0; i < 50; i++) {}
-			car->shoot(windowSize, dt);
-
+			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			{
+				car->shoot(windowSize, dt);
+			}
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) car->reload();
 
+		///if(car->getBullet().getGlobalBounds().intersects(traffic[1]->getSprite().getGlobalBounds());
+		/// to przerobić
 		/*  -------------------------------------------------  */
 		if (spawnTime > 2.0) {
 				traffic.push_back(new Traffic{ 0.0, 9.0f + 1.0f * Player::getLvl() });

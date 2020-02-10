@@ -52,6 +52,7 @@ public:
 	int getBulletSize() { return bullet.size(); }
 	sf::CircleShape& getBullet(int i) { return bullet[i].getBullet(); }
 	sf::CircleShape& getMagazine() { return magazine; }
+	Bullet& getBulletObj(int i) { return bullet[i]; }
 };
 
 #endif

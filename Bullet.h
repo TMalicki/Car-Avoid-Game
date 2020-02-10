@@ -7,7 +7,7 @@ class Bullet
 {
 private:
 	sf::CircleShape bullet;
-	static const int recoil = 300;
+	static const int recoil = 50;
 	static int actualTimeToRecoil;
 	float speed;
 	int size;
@@ -20,7 +20,11 @@ public:
 	void move(sf::Vector2i windowSize, float dt);
 	void position(float x, float y) { bullet.setPosition(x, y); }
 	sf::CircleShape& getBullet() { return bullet; }
-	bool Recoil();
+	static bool Recoil();
+	static int getTimeToRecoil() { return actualTimeToRecoil; }
+	static void setTimeToRecoil(int x) { actualTimeToRecoil = x; }
+
+	static int getRecoil() { return recoil; }
 	float getPosition() { return bullet.getPosition().y; }
 };
 
