@@ -48,17 +48,24 @@ bool Game::run()
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) car->reload();
 
-		///if(car->getBullet().getGlobalBounds().intersects(traffic[1]->getSprite().getGlobalBounds());
-		/// to przerobić
+		for (int i = 0; i < traffic.size() && traffic.size() != 0; i++)
+		{
+			if (traffic[i]->collision(car->getBulletVect()))
+			{
+				car->scoreUp();
+				traffic.erase(traffic.begin() + i);
+			}
+		}
 		/*  -------------------------------------------------  */
-		if (spawnTime > 2.0) {
-				traffic.push_back(new Traffic{ 0.0, 9.0f + 1.0f * Player::getLvl() });
-		
+		if (spawnTime > 2.0) 
+		{
+			traffic.push_back(new Traffic{ 0.0, 9.0f + 1.0f * Player::getLvl() });
+			cout << Player::getLvl() << endl;
 			traffic.back()->saveSettings(windowSize);
 			spawnTime = 0.0;
 		}
 
-		spawnTime += dt +(0.0005 * Player::getLvl());
+		spawnTime += dt + (0.005 * Player::getLvl());
 
 		if (traffic.size() != 0)
 			for (int i = 0; i < traffic.size(); i++)

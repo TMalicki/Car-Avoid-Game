@@ -3,6 +3,7 @@
 
 #include "car.h"
 #include "Bullet.h"
+#include "Traffic.h"
 #include <vector>
 
 class Player : public Car {
@@ -32,7 +33,7 @@ public:
 	void setText();
 	sf::Text getText() { return tScore; }
 	
-	void lvlUp(std::vector<Car*> trafficCar);
+	void lvlUp(std::vector<Traffic*>& trafficCar);
 	static int getLvl() { return lvl; }
 
 	virtual void startPoint(sf::Vector2i, int);
@@ -41,10 +42,11 @@ public:
 	void calculateCollisionArea();
 	sf::VertexArray getCollisionArea() { return *collisionArea; }
 
-	bool collision(std::vector<Car*> trafficCar);
+	bool collision(std::vector<Traffic*> trafficCar);
 	bool collisionSAT(Car*);
 
-	void pointsGather(std::vector<Car*>&, sf::Vector2i);
+	void pointsGather(std::vector<Traffic*>&, sf::Vector2i);
+	void scoreUp() { score++; }
 	int getPoints() { return score; }
 
 	void shoot(sf::Vector2i windowSize, float dt);
@@ -52,7 +54,9 @@ public:
 	int getBulletSize() { return bullet.size(); }
 	sf::CircleShape& getBullet(int i) { return bullet[i].getBullet(); }
 	sf::CircleShape& getMagazine() { return magazine; }
+
 	Bullet& getBulletObj(int i) { return bullet[i]; }
+	vector<Bullet>& getBulletVect() { return bullet; }
 };
 
 #endif

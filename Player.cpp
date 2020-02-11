@@ -93,7 +93,7 @@ void Player::calculateCollisionArea()
 	}
 }
 
-bool Player::collision(std::vector<Car*> trafficCar)
+bool Player::collision(std::vector<Traffic*> trafficCar)
 {
 	if (trafficCar.size() != 0) return collisionSAT(trafficCar.front());
 	else return false;
@@ -177,24 +177,24 @@ bool Player::collisionSAT(Car* traffic)
 			collided = false;
 		}
 		counter++;
-
+		/*
 		cout << "Counter: " << counter << endl;
 		cout << " topLeftCorner: X: " << topLeftCorner.x << " Y: " << topLeftCorner.y << endl;
 		cout << " bottomLeftCorner: X: " << bottomLeftCorner.x << " Y: " << bottomLeftCorner.y << endl;
 		cout << " trafficTopLeftCorner: X: " << trafficTopLeftCorner.x << " Y: " << trafficTopLeftCorner.y << endl;
-		cout << " trafficBottomLeftCorner: X: " << trafficBottomLeftCorner.x << " Y: " << trafficBottomLeftCorner.y << endl;
+		cout << " trafficBottomLeftCorner: X: " << trafficBottomLeftCorner.x << " Y: " << trafficBottomLeftCorner.y << endl;*/
 	}
 	return collided;
 }
 
-void Player::lvlUp(std::vector<Car*> trafficCar)
+void Player::lvlUp(std::vector<Traffic*>& trafficCar)
 {
 	if (score % 10 == 0) {
 		lvl++;
 	}
 }
 
-void Player::pointsGather(std::vector<Car*>& trafficCar, sf::Vector2i windowSize)
+void Player::pointsGather(std::vector<Traffic*>& trafficCar, sf::Vector2i windowSize)
 {
 	if ((*trafficCar.begin())->getSprite().getGlobalBounds().top >= windowSize.y)
 	{

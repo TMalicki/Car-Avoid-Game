@@ -27,7 +27,7 @@ private:
 	vector<Road> road;
 
 	float spawnTime = 0.0; // spawning time of traffic cars
-	vector<Car*> traffic;
+	vector<Traffic*> traffic;
 public:
 	Game(int i = 6);	// "i" is for amount of stripes on the road
 	void setup();
