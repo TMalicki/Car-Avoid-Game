@@ -1,62 +1,67 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "car.h"
-#include "Bullet.h"
-#include "Traffic.h"
 #include <vector>
+#include "car.h"
+#include "Traffic.h"
+#include "Bullet.h"
 
-class Player : public Car {
-private:
-	int score;
-	sf::Text tScore;
-	sf::Font font;
+class Player : public Car 
+{
+	private:
+		sf::Text tScore;
+		sf::Font font;
+		int score;
 
-	sf::Vector2f topLeftCorner;
-	sf::Vector2f topRightCorner;
-	sf::Vector2f bottomLeftCorner;
-	sf::Vector2f bottomRightCorner;
+		sf::Vector2f topLeftCorner;
+		sf::Vector2f topRightCorner;
+		sf::Vector2f bottomLeftCorner;
+		sf::Vector2f bottomRightCorner;
+		sf::VertexArray* collisionArea;
 
-	sf::VertexArray* collisionArea;
-	///std::vector<sf::Vector2f> narrowPoints;
+		static int lvl;
+		///sf::Vector2i dirY;
 
-	static int lvl;
+		int bulletAmount = 0;
+		int bulletMaxAmount = 5;
+		std::vector<Bullet> bullet;
+		bool reloading;
 
-	int bulletAmount = 0;
-	int bulletMaxAmount = 5;
-	std::vector<Bullet> bullet;
+	public:
+		Player(float sX = 12.0, float sY = 0.0);
 
-public:
-	Player(float sX = 12.0, float sY = 0.0);
-
-	virtual void setTexture() { tCar.loadFromFile("sprites/car1.png"); }
-	void setText();
-	sf::Text getText() { return tScore; }
+		virtual void setTexture() { tCar.loadFromFile("sprites/car1.png"); }
+		void setText();
+		sf::Text getText() { return tScore; }
 	
-	void lvlUp(std::vector<Traffic*>& trafficCar);
-	static int getLvl() { return lvl; }
+		void lvlUp();
+		static int getLvl() { return lvl; }
 
-	virtual void startPoint(sf::Vector2i, int);
-	virtual void moveCar(sf::Vector2i, float);
+		virtual void startPoint(sf::Vector2i, int);
+		virtual void moveCar(sf::Vector2i, float);
 
-	void calculateCollisionArea();
-	sf::VertexArray getCollisionArea() { return *collisionArea; }
+		void calculateSpriteVertexes();
+		void showCollisionArea();
+		sf::VertexArray getCollisionArea() { return *collisionArea; }
 
-	bool collision(std::vector<Traffic*> trafficCar);
-	bool collisionSAT(Car*);
+		//bool collision(std::vector<Traffic*> trafficCar);
+		bool collisionSAT(std::vector<Traffic*>);
 
-	void pointsGather(std::vector<Traffic*>&, sf::Vector2i);
-	void scoreUp() { score++; }
-	int getPoints() { return score; }
+		void scoreUp() { score++; }
+		int getPoints() { return score; }
 
-	void shoot(sf::Vector2i windowSize, float dt);
-	void reload();
-	int getBulletSize() { return bullet.size(); }
-	sf::CircleShape& getBullet(int i) { return bullet[i].getBullet(); }
-	sf::CircleShape& getMagazine() { return magazine; }
+		void shoot();
+		void reload();
+		void bulletMove(sf::Vector2i, float dt);
+		int getBulletSize() { return bullet.size(); }
+		sf::CircleShape& getBullet(int i) { return bullet[i].getBullet(); }
+		sf::CircleShape& getMagazine() { return magazine; }
+		
+		void setReloading(bool logic) { reloading = logic; }
+		bool getReloading() { return reloading; }
 
-	Bullet& getBulletObj(int i) { return bullet[i]; }
-	vector<Bullet>& getBulletVect() { return bullet; }
+		Bullet& getBulletObj(int i) { return bullet[i]; }
+		vector<Bullet>& getBulletVect() { return bullet; }
 };
 
 #endif

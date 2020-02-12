@@ -5,8 +5,6 @@ using namespace std;
 Game::Game(int i) : road{1,2,3,4,5,6}
 {
 	setup();
-	run();
-	draw();
 }
 
 void Game::setup()
@@ -14,44 +12,47 @@ void Game::setup()
 	srand(time(NULL));
 
 	windowSize = setting.getWindowSize();
-
 	window = new sf::RenderWindow(sf::VideoMode(windowSize.x, windowSize.y), "CarAvoid");
 	
 	car = new Player;
-	car->saveSettings(windowSize);
+	car->saveSpriteSettings(windowSize);
+	car->calculateSpriteVertexes();
 	car->setText();
 
-	for(int i = 0;i<road.size();i++)
+	for (int i = 0; i < road.size(); i++)
+	{
 		road[i].setStripPosition(&windowSize.x);
+	}
 }
 
 bool Game::run()
 {
-	while (window->isOpen() && !car->collision(traffic))
+	while (window->isOpen() && !car->collisionSAT(traffic))
 	{
-		while (window->pollEvent(event))
-		{
-			if (event.type == sf::Event::Closed) window->close();
-		}
+		updateEvents(window, event);
+
 		dt = clock.restart().asSeconds();
 
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) car->setDir(sf::Vector2i(1, 0));
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) car->setDir(sf::Vector2i(-1, 0));
 		else car->setDir(sf::Vector2i(0, 0));
 
-		if (Bullet::Recoil()) // how to make que so bullet do not have to wait?
+		if (Bullet::Recoil()) 
 		{
 			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
 			{
-				car->shoot(windowSize, dt);
+				car->shoot();
 			}
 		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R)) car->reload();
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && car->getReloading() == false) car->setReloading(true);
+			
+			
+		if(car->getReloading() == true) car->reload();
 
 		for (int i = 0; i < traffic.size() && traffic.size() != 0; i++)
 		{
 			if (traffic[i]->collision(car->getBulletVect()))
-			{
+			{ /// that also put inside pointsGather() method
 				car->scoreUp();
 				traffic.erase(traffic.begin() + i);
 			}
@@ -60,8 +61,7 @@ bool Game::run()
 		if (spawnTime > 2.0) 
 		{
 			traffic.push_back(new Traffic{ 0.0, 9.0f + 1.0f * Player::getLvl() });
-			cout << Player::getLvl() << endl;
-			traffic.back()->saveSettings(windowSize);
+			traffic.back()->saveSpriteSettings(windowSize);
 			spawnTime = 0.0;
 		}
 
@@ -73,8 +73,11 @@ bool Game::run()
 		/*  -------------------------------------------------  */
 
 		car->moveCar(windowSize, dt);
+		car->calculateSpriteVertexes();
+		car->showCollisionArea();
+		car->bulletMove(windowSize, dt);	// to nie powinno byc w klasie bullet?
 
-		if (traffic.size() != 0) car->pointsGather(traffic, windowSize);
+		if (traffic.size() != 0) pointsGather();
 
 		car->setText();
 
@@ -116,4 +119,30 @@ void Game::draw()
 	window->draw(car->getText());
 	window->draw(car->getMagazine());
 	window->display();
+}
+
+
+void Game::pointsGather()
+{
+	if ((*traffic.begin())->getSprite().getGlobalBounds().top >= windowSize.y)
+	{
+		car->scoreUp();
+		traffic.erase(traffic.begin());
+		car->lvlUp();
+	}
+}
+
+void Game::updateEvents(sf::RenderWindow* window, sf::Event& event)
+{
+	while (window->pollEvent(event))
+	{
+		if (event.type == sf::Event::Closed) window->close();
+		if (event.type == sf::Event::KeyPressed)
+		{
+			if (event.key.code == sf::Keyboard::Escape)
+			{
+				window->close();
+			}
+		}		
+	}
 }
