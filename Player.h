@@ -44,17 +44,17 @@ class Player : public Car
 		void showCollisionArea();
 		sf::VertexArray getCollisionArea() { return *collisionArea; }
 
-		//bool collision(std::vector<Traffic*> trafficCar);
 		bool collisionSAT(std::vector<Traffic*>);
 
 		void scoreUp() { score++; }
 		int getPoints() { return score; }
 
+		/// shooting methods *------------------------------------------------------------------------------------------------------------------------------
 		void shoot();
 		void reload();
-		void bulletMove(sf::Vector2i, float dt);
-		int getBulletSize() { return bullet.size(); }
-		sf::CircleShape& getBullet(int i) { return bullet[i].getBullet(); }
+		void bulletMove(sf::Vector2i, float dt); /// tego nie powino byc chyba wgl. To powinna byc metoda klasy Game
+		int getBulletSize() { return bullet.size(); } /// tego tez chyba nie powinno wgl byc
+		sf::CircleShape& getBulletSprite(int i) { return bullet[i].getBullet(); }
 		sf::CircleShape& getMagazine() { return magazine; }
 		
 		void setReloading(bool logic) { reloading = logic; }
@@ -62,6 +62,7 @@ class Player : public Car
 
 		Bullet& getBulletObj(int i) { return bullet[i]; }
 		vector<Bullet>& getBulletVect() { return bullet; }
+		/// *------------------------------------------------------------------------------------------------------------------------------------------------
 };
 
 #endif

@@ -45,19 +45,9 @@ bool Game::run()
 			}
 		}
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && car->getReloading() == false) car->setReloading(true);
-			
-			
+					
 		if(car->getReloading() == true) car->reload();
 
-		for (int i = 0; i < traffic.size() && traffic.size() != 0; i++)
-		{
-			if (traffic[i]->collision(car->getBulletVect()))
-			{ /// that also put inside pointsGather() method
-				car->scoreUp();
-				traffic.erase(traffic.begin() + i);
-			}
-		}
-		/*  -------------------------------------------------  */
 		if (spawnTime > 2.0) 
 		{
 			traffic.push_back(new Traffic{ 0.0, 9.0f + 1.0f * Player::getLvl() });
@@ -75,6 +65,7 @@ bool Game::run()
 		car->moveCar(windowSize, dt);
 		car->calculateSpriteVertexes();
 		car->showCollisionArea();
+		//bulletMove();
 		car->bulletMove(windowSize, dt);	// to nie powinno byc w klasie bullet?
 
 		if (traffic.size() != 0) pointsGather();
@@ -112,7 +103,7 @@ void Game::draw()
 
 	if (car->getBulletSize() != 0) {
 		for (int i = 0; i < car->getBulletSize(); i++) {
-			window->draw(car->getBullet(i));
+			window->draw(car->getBulletSprite(i));
 		}
 	}
 
@@ -130,6 +121,15 @@ void Game::pointsGather()
 		traffic.erase(traffic.begin());
 		car->lvlUp();
 	}
+
+	for (int i = 0; i < traffic.size() && traffic.size() != 0; i++)
+	{
+		if (traffic[i]->collision(car->getBulletVect()))
+		{ 
+			car->scoreUp();
+			traffic.erase(traffic.begin() + i);
+		}
+	}
 }
 
 void Game::updateEvents(sf::RenderWindow* window, sf::Event& event)
@@ -146,3 +146,21 @@ void Game::updateEvents(sf::RenderWindow* window, sf::Event& event)
 		}		
 	}
 }
+/*
+void Game::bulletMove()
+{
+	int bulletSize = car->getBulletSize();
+	if (bulletSize != 0)
+	{
+		for (int i = 0; i < bulletSize; i++)
+		{
+			car->getBulletObj(i).move(windowSize, dt);
+			//bullet[i].move(windowSize, dt);
+			if (car->getBulletVect().back().getPosition() < 0)
+			{
+				car->getBulletVect().pop_back();
+			}
+		}
+	}
+}
+*/

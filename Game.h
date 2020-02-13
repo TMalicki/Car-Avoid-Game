@@ -33,6 +33,7 @@ class Game
 		void draw();
 		void pointsGather();
 		void updateEvents(sf::RenderWindow*, sf::Event&);
+		void bulletMove();
 		// update();
 };
 
