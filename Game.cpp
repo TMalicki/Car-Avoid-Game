@@ -39,7 +39,7 @@ void Game::setup()
 
 bool Game::run()
 {
-	while (window->isOpen() && !car->collisionSAT(traffic))
+	while (window->isOpen())
 	{
 		updateEvents(window, event);
 
@@ -81,6 +81,8 @@ bool Game::run()
 		car->showCollisionArea();
 		//bulletMove();
 		car->bulletMove(windowSize, dt);	// to nie powinno byc w klasie bullet?
+
+		if (car->collisionSAT(traffic)) theEnd = true;
 
 		if (traffic.size() != 0) pointsGather();
 
