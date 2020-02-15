@@ -14,7 +14,11 @@ void Game::setup()
 	windowSize = setting.getWindowSize();
 	window = new sf::RenderWindow(sf::VideoMode(windowSize.x, windowSize.y), "CarAvoid");
 	
+	if (car != nullptr) delete car;
 	car = new Player;
+
+	while (traffic.size() != 0) traffic.pop_back();
+
 	car->saveSpriteSettings(windowSize);
 	car->calculateSpriteVertexes();
 	car->setText();
@@ -93,7 +97,7 @@ bool Game::run()
 		}
 		else if (theEnd == true)
 		{
-
+			
 		}
 		draw();
 	}
