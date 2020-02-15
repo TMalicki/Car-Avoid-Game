@@ -51,7 +51,7 @@ class Player : public Car
 
 		/// shooting methods *------------------------------------------------------------------------------------------------------------------------------
 		void shoot();
-		void reload();
+		void reload(float dt);
 		void bulletMove(sf::Vector2i, float dt); /// tego nie powino byc chyba wgl. To powinna byc metoda klasy Game
 		int getBulletSize() { return bullet.size(); } /// tego tez chyba nie powinno wgl byc
 		sf::CircleShape& getBulletSprite(int i) { return bullet[i].getBullet(); }

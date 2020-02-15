@@ -23,9 +23,15 @@ class Game
 		vector<Traffic*> traffic;
 		vector<Road> road;
 
+		sf::Sprite sEndScreen;
+		sf::Texture tEndScreen;
+		sf::Sprite sChooseBar;
+		sf::Texture tChooseBar;
+
 		float dt; // 0.0016; // for 60 Hz
 		sf::Clock clock;
 		float spawnTime = 0.0; /// spawning timer of traffic cars
+		bool theEnd = false;
 	public:
 		Game(int i = 6); /// "i" is for amount of stripes on the road
 		void setup();

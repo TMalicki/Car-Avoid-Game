@@ -183,22 +183,22 @@ void Player::shoot()
 				bulletAmount++;
 				bullet.back().position(bulletPos.x, bulletPos.y);
 			}
-			Bullet::setTimeToRecoil(0);
+			Bullet::setTimeToRecoil(0.0);
 		}
 	}
 }
 
-void Player::reload()
+void Player::reload(float dt)
 {
-	static int counter = 0;
+	static float counter = 0.0;
 
-	if (counter >= 1000)
+	if (counter >= 1.5)
 	{
 		bulletAmount = 0;
-		counter = 0;
+		counter = 0.0;
 		setReloading(false);
 	}
-	counter++;
+	counter+=dt;
 	std::cout << counter << std::endl;
 }
 
