@@ -79,7 +79,7 @@ bool Player::collisionSAT(std::vector<Traffic*> traffic)
 	int counter = 1;
 	/// vertexes of player object are: A - topLeftCorner, B - topRightCorner, C - bottomRightCorner, D - bottomLeftCorner (clockwise)
 	/// vertexes od traffic Car object are: E, F, G, H (clockwise)
-
+	//std::cout << "/nCollision/n";
 	if (traffic.size() != 0)
 	{
 		sf::FloatRect trafficCar = traffic.front()->getSprite().getGlobalBounds();	/// is it necessary to check if it;s not front() sprite? try that!
@@ -158,7 +158,7 @@ bool Player::collisionSAT(std::vector<Traffic*> traffic)
 void Player::lvlUp()
 {
 	if (score % 10 == 0) {
-		lvl++;
+		if(lvl < 11) lvl++;
 	}
 }
 

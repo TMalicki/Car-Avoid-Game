@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include "Game.h"
 #include "settings.h"
 #include "car.h"
@@ -28,6 +29,9 @@ class Game
 		sf::Sprite sChooseBar;
 		sf::Texture tChooseBar;
 
+		sf::SoundBuffer bShot;
+		sf::Sound sShot;
+
 		float dt; // 0.0016; // for 60 Hz
 		sf::Clock clock;
 		float spawnTime = 0.0; /// spawning timer of traffic cars
@@ -39,6 +43,7 @@ class Game
 		void draw();
 		void pointsGather();
 		void updateEvents(sf::RenderWindow*, sf::Event&);
+		void updateVehicles();
 		void bulletMove();
 		// update();
 };

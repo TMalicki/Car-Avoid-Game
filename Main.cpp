@@ -10,3 +10,6 @@ int main()
 
 	return 0;
 }
+
+/// do poprawy - podczas reloadingu jest sie odpornym na kolizje
+/// ograniczyc trzeba poziomy zdobywane

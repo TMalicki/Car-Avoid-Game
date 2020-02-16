@@ -14,11 +14,15 @@ void Game::setup()
 	windowSize = setting.getWindowSize();
 	window = new sf::RenderWindow(sf::VideoMode(windowSize.x, windowSize.y), "CarAvoid");
 	
+	bShot.loadFromFile("music/shot.ogg");
+	sShot.setBuffer(bShot);
+	sShot.setVolume(100.f);
+
 	if (car != nullptr) delete car;
 	car = new Player;
 
 	while (traffic.size() != 0) traffic.pop_back();
-
+		
 	car->saveSpriteSettings(windowSize);
 	car->calculateSpriteVertexes();
 	car->setText();
@@ -51,29 +55,32 @@ bool Game::run()
 		{
 		dt = clock.restart().asSeconds();
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) car->setDir(sf::Vector2i(1, 0));
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) car->setDir(sf::Vector2i(-1, 0));
-		else car->setDir(sf::Vector2i(0, 0));
-
-		if (Bullet::Recoil())
-		{
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-			{
-				car->shoot();
-			}
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && car->getReloading() == false) car->setReloading(true);
+		updateVehicles();
 
 		if (car->getReloading() == true) car->reload(dt);
 
 		if (spawnTime > 2.0)
 		{
-			traffic.push_back(new Traffic{ 0.0, 9.0f + 1.0f * Player::getLvl() });
-			traffic.back()->saveSpriteSettings(windowSize);
+			int randAmount = rand() % 5;
+			for (int i = 0; i < randAmount; i++)
+			{
+				Traffic* temp = new Traffic(0.0, 9.0f + 1.0f * Player::getLvl());
+				temp->saveSpriteSettings(windowSize);
+		
+				int line = 1;
+				while (temp->collision(traffic) && line < 5)
+				{
+					temp->changeLine(line);
+					line++;
+				}
+				if(line < 5) traffic.push_back(temp);
+			}
 			spawnTime = 0.0;
 		}
-
-		spawnTime += dt + (0.0005 * Player::getLvl());
+		
+		//if (Player::getLvl() <= 10)
+			spawnTime += dt + (0.0005 * Player::getLvl());
+		//else spawnTime += dt;
 
 		if (traffic.size() != 0)
 			for (int i = 0; i < traffic.size(); i++)
@@ -83,7 +90,6 @@ bool Game::run()
 		car->moveCar(windowSize, dt);
 		car->calculateSpriteVertexes();
 		car->showCollisionArea();
-		//bulletMove();
 		car->bulletMove(windowSize, dt);	// to nie powinno byc w klasie bullet?
 
 		if (car->collisionSAT(traffic)) theEnd = true;
@@ -137,6 +143,7 @@ void Game::draw()
 		window->draw(sEndScreen);
 		window->draw(sChooseBar);
 	}
+
 	window->display();
 }
 
@@ -198,6 +205,23 @@ void Game::updateEvents(sf::RenderWindow* window, sf::Event& event)
 		}
 	}
 }
+void Game::updateVehicles()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) car->setDir(sf::Vector2i(1, 0));
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) car->setDir(sf::Vector2i(-1, 0));
+	else car->setDir(sf::Vector2i(0, 0));
+
+	if (Bullet::Recoil())
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			car->shoot();
+			sShot.play();
+		}
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && car->getReloading() == false) car->setReloading(true);
+}
+
 /*
 void Game::bulletMove()
 {
