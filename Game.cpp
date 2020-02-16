@@ -14,11 +14,15 @@ void Game::setup()
 	windowSize = setting.getWindowSize();
 	window = new sf::RenderWindow(sf::VideoMode(windowSize.x, windowSize.y), "CarAvoid");
 	
+	bShot.loadFromFile("music/shot.ogg");
+	sShot.setBuffer(bShot);
+	sShot.setVolume(100.f);
+
 	if (car != nullptr) delete car;
 	car = new Player;
 
 	while (traffic.size() != 0) traffic.pop_back();
-
+		
 	car->saveSpriteSettings(windowSize);
 	car->calculateSpriteVertexes();
 	car->setText();
@@ -39,6 +43,10 @@ void Game::setup()
 	sChooseBar.setColor(sf::Color(255, 255, 255, 128));
 	sChooseBar.setScale(0.7, 0.7);
 	sChooseBar.setPosition(178, 462);
+
+	tExplosion.loadFromFile("sprites/explosion.png");
+	rectSourceSprite = sf::IntRect(0, 0, 70, 70);
+	sExplosion = sf::Sprite(tExplosion, rectSourceSprite);
 }
 
 bool Game::run()
@@ -51,18 +59,7 @@ bool Game::run()
 		{
 		dt = clock.restart().asSeconds();
 
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) car->setDir(sf::Vector2i(1, 0));
-		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) car->setDir(sf::Vector2i(-1, 0));
-		else car->setDir(sf::Vector2i(0, 0));
-
-		if (Bullet::Recoil())
-		{
-			if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
-			{
-				car->shoot();
-			}
-		}
-		if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && car->getReloading() == false) car->setReloading(true);
+		updateVehicles();
 
 		if (car->getReloading() == true) car->reload(dt);
 
@@ -83,7 +80,6 @@ bool Game::run()
 		car->moveCar(windowSize, dt);
 		car->calculateSpriteVertexes();
 		car->showCollisionArea();
-		//bulletMove();
 		car->bulletMove(windowSize, dt);	// to nie powinno byc w klasie bullet?
 
 		if (car->collisionSAT(traffic)) theEnd = true;
@@ -137,6 +133,21 @@ void Game::draw()
 		window->draw(sEndScreen);
 		window->draw(sChooseBar);
 	}
+
+//	if(explosionCounter <= 5)
+//	{
+//		if (explosionCounter > 1.0)
+//		{
+//			rectSourceSprite.left =+ 70;
+			sExplosion.setTextureRect(rectSourceSprite);
+			window->draw(sExplosion);
+//			explosionCounter++;
+//			timeExplosion = 0.0;
+//		}
+//		timeExplosion += dt;
+//	}
+
+
 	window->display();
 }
 
@@ -154,6 +165,8 @@ void Game::pointsGather()
 	{
 		if (traffic[i]->collision(car->getBulletVect()))
 		{ 
+			sExplosion.setPosition(traffic[i]->getSprite().getPosition());
+
 			car->scoreUp();
 			traffic.erase(traffic.begin() + i);
 			car->lvlUp();
@@ -198,6 +211,23 @@ void Game::updateEvents(sf::RenderWindow* window, sf::Event& event)
 		}
 	}
 }
+void Game::updateVehicles()
+{
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) car->setDir(sf::Vector2i(1, 0));
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) car->setDir(sf::Vector2i(-1, 0));
+	else car->setDir(sf::Vector2i(0, 0));
+
+	if (Bullet::Recoil())
+	{
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			car->shoot();
+			sShot.play();
+		}
+	}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::R) && car->getReloading() == false) car->setReloading(true);
+}
+
 /*
 void Game::bulletMove()
 {

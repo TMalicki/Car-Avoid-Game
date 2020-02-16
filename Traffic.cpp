@@ -1,9 +1,31 @@
-#include "Traffic.h"
-
+﻿#include "Traffic.h"
+/*
 bool Traffic::collision(Traffic& newCar, Traffic& oldCar)
 {
 	if (newCar.getSprite().getGlobalBounds().intersects(oldCar.getSprite().getGlobalBounds())) return true;
 	else return false;
+}
+*/
+
+Traffic::Traffic(float sX, float sY) : Car(sX, sY)
+{
+}
+
+bool Traffic::collision(vector<Bullet>& bullet)
+{
+	int tempSize = bullet.size();
+	int tempLogic = false;
+
+	while(tempSize-- && tempLogic == false)
+	{
+		if (this->getSprite().getGlobalBounds().intersects(bullet[tempSize].getBullet().getGlobalBounds()))
+		{
+			tempLogic = true;
+			bullet.erase(bullet.begin() + tempSize);
+		}
+	}
+
+	return tempLogic;
 }
 
 void Traffic::startPoint(/*std::vector<Traffic>& traffic*/sf::Vector2i windowSize, int carCorrection)
@@ -26,6 +48,5 @@ void Traffic::startPoint(/*std::vector<Traffic>& traffic*/sf::Vector2i windowSiz
 
 void Traffic::moveCar(sf::Vector2i windowSize, float dt)
 {
-	//std::cout << speed.y << std::endl;
 	sCar.move(0, dt * timeMultiply * speed.y);
 }
