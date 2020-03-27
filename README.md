@@ -1,19 +1,11 @@
 # Car-Avoid-Game
 Game made with SFML where you drive a car and try to avoid obstacles.
 
-In game your drive a car. Car can turn left, right, accelerate, break. You have to avoid obstacles, that are generated randomly on one of five track. Road have five tracks. Your goal is to earn as much points as possible. Earning money can boost your points earning. Getting more points include driving faster. 
+In game your drive a car. Car can turn left, right and shoot. You have to avoid obstacles, that are generated randomly on one of five track. Road have five tracks. Your goal is to earn as much points as possible. Getting more points will lvl up difficulty lvl. With that cars are spawning more frequently and they are driving faster. Your magazine can store 5 bullets, than if you are empty you have to reload.
 
-Basic assumptions:
-- Car can move to the left and right
-- Car can accelerate and break
-- Obstacles are generated randomly on one of five tracks
-- Road has five tracks
-- Car earn money
+**Steering**
+left/right arrow keys - moving left/right
+space button - shoot
+r button - reload
 
-
-Additional assumptions:
-- Car can fire and destroy some of obstacles
-- Car can get upgrades
-- Upgrades can be earned with moneys in shop
-- Shop object
-- Weapon object
+<img src="carAvoid.png" alt="Image"/>
