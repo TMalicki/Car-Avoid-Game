@@ -8,4 +8,6 @@ left/right arrow keys - moving left/right
 space button - shoot
 r button - reload
 
-<img src="carAvoid.png" alt="Image"/>
+  <img src="carAvoid.png" alt="Image" width="320"/></div>
+  <img src="carAvoid2.jpg" alt="Image" width="320"/></div>
+  </p>
